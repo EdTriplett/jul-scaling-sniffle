@@ -32,4 +32,7 @@ changed `admin` to `"admin"` in declaration of hard-coded user object
 
 Moved new Strategy above de/serialize, and simplified the function for a hard-coded user.
 
+added line 25: 
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+
 validPassword - changed the second argument for bcrypt.compareSync to userObj.hashedPassword

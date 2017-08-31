@@ -20,6 +20,9 @@ app.use(
     resave: false
   })
 );
+
+
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set("view engine", "exphbs");
 
 app.use(passport.initialize());
@@ -40,11 +43,11 @@ const validPassword = function(password) {
   return bcrypt.compareSync(password, userObj.hashedPassword);
 };
 
-const loginMiddleware = (req, res, next) => {
-  const username = req.username;
+// const loginMiddleware = (req, res, next) => {
+//   const username = req.username;
 
-  if (!sessionId) return next();
-}
+//   if (!sessionId) return next();
+// }
 
 const loggedInOnly = (req, res, next) => {
   if (req.isAuthenticated()) {
@@ -55,7 +58,9 @@ const loggedInOnly = (req, res, next) => {
 };
 
 const loggedOutOnly = (req, res, next) => {
-  if (req.isUnauthenticated()) {next()} else {
+  if (req.isUnauthenticated()) {
+    next()
+  } else {
     return res.redirect("/")
   }
 };
@@ -84,19 +89,19 @@ passport.deserializeUser(function(userId, done) {
 });
 
 app.get("/", loggedInOnly, (req, res) => {
-  if (req.user) {
+  // if (req.user) {
     res.render("home", user);
-  } else {
-    res.redirect("/login");
-  }
+  // } else {
+  //   res.redirect("/login");
+  // }
 });
 
 app.get("/login", loggedOutOnly, (req, res) => {
-  if (req.user) {
+  // if (req.user) {
     res.render("login");
-  } else {
-    res.redirect("/");
-  }
+  // } else {
+  //   res.redirect("/");
+  // }
 });
 
 app.post(
