@@ -23,7 +23,7 @@ app.use(
 
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
-app.set("view engine", "exphbs");
+app.set("view engine", "handlebars");
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -58,8 +58,8 @@ const loggedInOnly = (req, res, next) => {
 };
 
 const loggedOutOnly = (req, res, next) => {
-  if (req.isUnauthenticated()) {
-    next()
+  if (!req.isAuthenticated()) {
+    next();
   } else {
     return res.redirect("/")
   }

@@ -1,24 +1,8 @@
-<!-- required closing brackets added 
 
-extraneous close-parentheses removed  -->
-
-(except for one I can’t find)
-
-```Ed Triplett:
-<!-- - Questions: more details for 8, good answers overall -->
-- Code: multiple typos in code, loginMiddleware not being used, confusion about what Strategy returns```
-<!-- 
- 60, move localStrat above serialize and desrialize -->
+TODO: lines 88 and 76
 
 
-
-
-[11:43] 
-<!-- Ed Triplett oh, and the values for user.name and .password weren’t strings -->
-
-
-[11:45] 
-line 60 and 64 don’t use hard-coded user correctly
+line 60 and 64 don’t use hard-coded user correctly (User.find)
 ///////////////////////////////keep portion below:
 
 Added more detail on question 8
@@ -36,3 +20,5 @@ added line 25:
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 
 validPassword - changed the second argument for bcrypt.compareSync to userObj.hashedPassword
+
+commented out extraneous middleware, and parts of routes that duplicated them.  Changed   `loggedOutOnly` to check for (!req.isAuthenticated) instead of (req.isUauthenticated)
