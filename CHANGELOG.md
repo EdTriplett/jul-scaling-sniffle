@@ -1,12 +1,4 @@
 
-TODO: lines 88 and 76
-
-ADDED layouts folder and main.handlebars
-
-
-line 60 and 64 don’t use hard-coded user correctly (User.find)
-///////////////////////////////keep portion below:
-
 Added more detail on question 8
 
 Code:
@@ -16,7 +8,7 @@ Renamed `user` to `userObj`, added a stored hash of the password to it as a new 
 
 validPassword - changed the second argument for bcrypt.compareSync to userObj.hashedPassword
 
-Simplified the Local Strategy for a hard-coded user.
+Simplified the Local Strategy for a hard-coded user, removing code patterned after Passport-Local docs that (while not specified as such in docs) only work with Mongoose
 
 added line 23: 
 app.engine('handlebars', exphbs());
