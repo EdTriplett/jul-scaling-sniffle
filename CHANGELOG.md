@@ -1,6 +1,8 @@
 
 TODO: lines 88 and 76
 
+ADDED layouts folder and main.handlebars
+
 
 line 60 and 64 don’t use hard-coded user correctly (User.find)
 ///////////////////////////////keep portion below:
@@ -8,17 +10,23 @@ line 60 and 64 don’t use hard-coded user correctly (User.find)
 Added more detail on question 8
 
 Code:
-Typoes - Added required closing brackets and removed extraneous closing parentheses
+Typoes - Added required closing brackets and removed extraneous closing parentheses.  
 
-Renamed `user` to `userObj`, and added a stored hash of the password to it.
-
-changed `admin` to `"admin"` in declaration of hard-coded user object
-
-Moved new Strategy above de/serialize, and simplified the function for a hard-coded user.
-
-added line 25: 
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+Renamed `user` to `userObj`, added a stored hash of the password to it as a new field, and changed `admin` to `"admin"` in name and password values.
 
 validPassword - changed the second argument for bcrypt.compareSync to userObj.hashedPassword
 
-commented out extraneous middleware, and parts of routes that duplicated them.  Changed   `loggedOutOnly` to check for (!req.isAuthenticated) instead of (req.isUauthenticated)
+Simplified the Local Strategy for a hard-coded user.
+
+added line 23: 
+app.engine('handlebars', exphbs());
+
+Changed `exphbs` to `handlebars` in setting the view engine on line 24
+
+Removed extraneous loginMiddleware, and parts of routes that duplicated remaining middleware.  
+
+Passed `{user:userObj}` instead of `user` to router for app.get("/", ... 
+
+removed `// Your code here...`
+
+added comments to annotate code

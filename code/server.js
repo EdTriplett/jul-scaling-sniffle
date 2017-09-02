@@ -1,5 +1,4 @@
-// "use strict";
-
+//Require modules
 const express = require('express');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
@@ -11,7 +10,7 @@ const expressSession = require('express-session');
 const app = express();
 
 
-
+//Mount middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
   expressSession({
@@ -21,34 +20,31 @@ app.use(
   })
 );
 
-
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.engine('handlebars', exphbs());
 app.set("view engine", "handlebars");
 
 app.use(passport.initialize());
 app.use(passport.session());
 
+//Hard-code user
 const userObj = {
   name: "admin",
   _password: "admin"
 };
 
+//Hash hardcoded password 
 const hashPass = function(value) {
   return bcrypt.hashSync(value, 12);
 };
-
+//store result
 userObj.hashedPassword = hashPass(userObj._password)
 
+//helper fxn using only hashed version of the hard-coded password
 const validPassword = function(password) {
   return bcrypt.compareSync(password, userObj.hashedPassword);
 };
 
-// const loginMiddleware = (req, res, next) => {
-//   const username = req.username;
-
-//   if (!sessionId) return next();
-// }
-
+// Middlewares for checking login/logout and protecting routes
 const loggedInOnly = (req, res, next) => {
   if (req.isAuthenticated()) {
     next();
@@ -58,14 +54,23 @@ const loggedInOnly = (req, res, next) => {
 };
 
 const loggedOutOnly = (req, res, next) => {
-  if (!req.isAuthenticated()) {
+  if (req.isUnauthenticated()) {
     next();
   } else {
     return res.redirect("/")
   }
 };
 
+// De/serialize user
+passport.serializeUser(function(user, done) {
+  done(null, userObj);
+});
 
+passport.deserializeUser(function(user, done) {
+  done(null, userObj);
+});
+
+// Create the local strategy
 const local = new LocalStrategy((username, password, done) => {
       if (username != userObj.name) {
         return done(null, false, {message: "Username not found"});
@@ -79,29 +84,13 @@ const local = new LocalStrategy((username, password, done) => {
 
 passport.use("local", local);
 
-passport.serializeUser(function(user, done) {
-  done(null, user._id);
-});
-
-passport.deserializeUser(function(userId, done) {
-  // no db, no find ById
-  User.findById(userId, (err, user) => done(err, user));
-});
-
+// Routes
 app.get("/", loggedInOnly, (req, res) => {
-  // if (req.user) {
-    res.render("home", user);
-  // } else {
-  //   res.redirect("/login");
-  // }
+    res.render("home", {user:userObj});
 });
 
 app.get("/login", loggedOutOnly, (req, res) => {
-  // if (req.user) {
     res.render("login");
-  // } else {
-  //   res.redirect("/");
-  // }
 });
 
 app.post(
@@ -117,9 +106,7 @@ app.post("/logout", function(req, res) {
   res.redirect("/");
 });
 
-
-// Your code here...
-
+//begin server
 app.listen(4000, () => {
   console.log('Application listening on port 4000!')
 })
